@@ -34,6 +34,7 @@ var a = make([]int64, N2, N2)
 func BenchmarkRoutine(b *testing.B) {
 	for i := range a {
 		a[i] = rand.Int63()
+		a[i] = rand.Int63()
 	}
 	b.Run("routines25", func(b *testing.B) {
 		SumThroughRoutines(a, N2, 25)
