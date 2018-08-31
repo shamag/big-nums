@@ -7,7 +7,7 @@ import (
 	"math/rand"
 )
 
-const N = 50
+const N = 10000000
 const routines = 30
 
 func SumBig(sl []int64) big.Int {
@@ -60,7 +60,8 @@ func main() {
 		a[i] = rand.Int63()
 	}
 	sum := SumThroughRoutines(a, N, routines)
+	fmt.Printf("%s\n", sum.String())
 
 	// sum2 := SumBig(a[:])
-	fmt.Printf("%s\n", sum.String())
+	// fmt.Printf("%s\n", sum2.String())
 }
