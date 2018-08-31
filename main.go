@@ -7,34 +7,36 @@ import (
 	"math/rand"
 )
 
-func sumBig(sl []big.Int) big.Int {
+const N = 2000
+const routines = 30
+
+func sumBig(sl []int64) big.Int {
 	var sum big.Int
 	sum.SetInt64(0)
 	for i := range sl {
-		sum.Add(&sum, &sl[i])
+		sum.Add(&sum, big.NewInt(sl[i]))
 	}
 	return sum
 }
-func sumBigChan(sl []big.Int, ch chan big.Int) {
+func sumBigChan(sl []int64, ch chan big.Int) {
 	var sum big.Int
 	sum.SetInt64(0)
 	for i := range sl {
-		sum.Add(&sum, &sl[i])
+		sum.Add(&sum, big.NewInt(sl[i]))
 	}
 	ch <- sum
 }
 func main() {
-	const N = 200000
-	const routines = 30
+
 	var sum big.Int
 	var chunkSize = float64(N) / float64((routines - 1))
 	sum.SetInt64(0)
 
 	var sumChan = make(chan big.Int)
 	// sem := make(chan bool, routines)
-	a := make([]big.Int, N, N)
+	a := make([]int64, N, N)
 	for i := range a {
-		a[i] = *a[i].SetInt64(rand.Int63())
+		a[i] = rand.Int63()
 	}
 
 	for chunkNum := 0; chunkNum < routines; chunkNum++ {
