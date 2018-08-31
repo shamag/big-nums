@@ -26,18 +26,13 @@ func sumBigChan(sl []int64, ch chan big.Int) {
 	}
 	ch <- sum
 }
-func main() {
 
+func sumThroughRoutines(a []int64, sliceLen int64, routines int) big.Int {
 	var sum big.Int
-	var chunkSize = float64(N) / float64((routines - 1))
 	sum.SetInt64(0)
+	var chunkSize = float64(sliceLen) / float64((routines - 1))
 
 	var sumChan = make(chan big.Int)
-	// sem := make(chan bool, routines)
-	a := make([]int64, N, N)
-	for i := range a {
-		a[i] = rand.Int63()
-	}
 
 	for chunkNum := 0; chunkNum < routines; chunkNum++ {
 		end := int(math.Floor(chunkSize * float64((chunkNum + 1))))
@@ -56,6 +51,16 @@ func main() {
 			close(sumChan)
 		}
 	}
+	return sum
+}
+func main() {
+
+	a := make([]int64, N, N)
+	for i := range a {
+		a[i] = rand.Int63()
+	}
+	sum := sumThroughRoutines(a, N, routines)
+
 	sum2 := sumBig(a[:])
 	fmt.Printf("%s %s \n", sum.String(), sum2.String())
 }
