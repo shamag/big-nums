@@ -7,10 +7,10 @@ import (
 	"math/rand"
 )
 
-const N = 2000
+const N = 50
 const routines = 30
 
-func sumBig(sl []int64) big.Int {
+func SumBig(sl []int64) big.Int {
 	var sum big.Int
 	sum.SetInt64(0)
 	for i := range sl {
@@ -18,7 +18,7 @@ func sumBig(sl []int64) big.Int {
 	}
 	return sum
 }
-func sumBigChan(sl []int64, ch chan big.Int) {
+func SumBigChan(sl []int64, ch chan big.Int) {
 	var sum big.Int
 	sum.SetInt64(0)
 	for i := range sl {
@@ -27,7 +27,7 @@ func sumBigChan(sl []int64, ch chan big.Int) {
 	ch <- sum
 }
 
-func sumThroughRoutines(a []int64, sliceLen int64, routines int) big.Int {
+func SumThroughRoutines(a []int64, sliceLen int64, routines int) big.Int {
 	var sum big.Int
 	sum.SetInt64(0)
 	var chunkSize = float64(sliceLen) / float64((routines - 1))
@@ -38,10 +38,10 @@ func sumThroughRoutines(a []int64, sliceLen int64, routines int) big.Int {
 		end := int(math.Floor(chunkSize * float64((chunkNum + 1))))
 		start := int(math.Floor(chunkSize * float64(chunkNum)))
 		if end >= len(a) {
-			go sumBigChan(a[start:], sumChan)
+			go SumBigChan(a[start:], sumChan)
 			break
 		}
-		go sumBigChan(a[start:end], sumChan)
+		go SumBigChan(a[start:end], sumChan)
 	}
 	var count = 1
 	for part := range sumChan {
@@ -59,8 +59,8 @@ func main() {
 	for i := range a {
 		a[i] = rand.Int63()
 	}
-	sum := sumThroughRoutines(a, N, routines)
+	sum := SumThroughRoutines(a, N, routines)
 
-	sum2 := sumBig(a[:])
-	fmt.Printf("%s %s \n", sum.String(), sum2.String())
+	// sum2 := SumBig(a[:])
+	fmt.Printf("%s\n", sum.String())
 }
