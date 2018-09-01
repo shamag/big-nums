@@ -50,3 +50,57 @@ func BenchmarkRoutine(b *testing.B) {
 		lib.SumBig(a[:])
 	})
 }
+
+func TestChanNull(t *testing.T) {
+	ch := make(chan int64)
+	go func() {
+		for i := 0; i < 100; i++ {
+			ch <- 0
+		}
+	}()
+	sum := lib.SumChan(100, 20, ch)
+	if sum.String() != big.NewInt(0).String() {
+		t.Error("Expected 0, got ", sum)
+	}
+}
+
+func TestChan100(t *testing.T) {
+	ch := make(chan int64)
+	go func() {
+		for i := 0; i < 100; i++ {
+			ch <- 100
+		}
+	}()
+	sum := lib.SumChan(100, 20, ch)
+	if sum.String() != big.NewInt(100*100).String() {
+		t.Error("Expected 10 000, got ", sum.String())
+	}
+}
+func SumBig2(sl []int64) big.Int {
+	var sum big.Int
+	sum.SetInt64(0)
+	for i := range sl {
+		sum.Add(&sum, big.NewInt(sl[i]))
+	}
+	return sum
+}
+func TestChanRandom(t *testing.T) {
+	ch := make(chan int64)
+	var count int64 = 200
+	a := make([]int64, count, count)
+	var i int64
+	for i = 0; i < count; i++ {
+		a[i] = rand.Int63()
+	}
+	go func() {
+		var i int64
+		for i = 0; i < count; i++ {
+			ch <- a[i]
+		}
+	}()
+	sum2 := SumBig2(a)
+	sum := lib.SumChan(count, 20, ch)
+	if sum.String() != sum2.String() {
+		t.Error("Expected values doesnt match, got ", sum.String())
+	}
+}
