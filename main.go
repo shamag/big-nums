@@ -6,8 +6,8 @@ import (
 	"math/rand"
 )
 
-const N = 300
-const routines = 299
+const N = 2000000000
+const routines = 30
 
 func main() {
 
@@ -24,7 +24,6 @@ func main() {
 	go func() {
 		for i := 0; i < N; i++ {
 			ch <- rand.Int63()
-			// ch <- 2
 		}
 	}()
 	sum := lib.SumChan(N, routines, ch)

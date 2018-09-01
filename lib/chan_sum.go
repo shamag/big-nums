@@ -1,7 +1,6 @@
 package lib
 
 import (
-	"fmt"
 	"math/big"
 	"sync"
 )
@@ -30,17 +29,14 @@ func SumChan(length int64, routinesNum int64, ch chan int64) big.Int {
 	return sum
 }
 func SumChanSingle(ch chan int64, out chan big.Int) {
-	fmt.Println("start routine")
 	var sum big.Int
 	wg2.Add(1)
 	sum.SetInt64(0)
 	for num := range ch {
-		fmt.Println("get val", num)
 		sum.Add(&sum, big.NewInt(num))
 		wg.Done()
 	}
 	defer func() {
-		fmt.Println("end ")
 		wg2.Done()
 		out <- sum
 	}()
