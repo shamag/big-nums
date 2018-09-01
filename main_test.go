@@ -1,6 +1,8 @@
 package main
 
 import (
+	lib "big-nums/lib"
+
 	"fmt"
 	"math/big"
 	"math/rand"
@@ -9,7 +11,7 @@ import (
 
 func TestNull(t *testing.T) {
 	a := make([]uint16, 10, 10)
-	sum := SumThroughRoutines(a, 10, 2)
+	sum := lib.SumThroughRoutines(a, 10, 2)
 	if sum.String() != big.NewInt(0).String() {
 		t.Error("Expected 0, got ", sum)
 	}
@@ -20,7 +22,7 @@ func Test100(t *testing.T) {
 	for i := range a {
 		a[i] = 100
 	}
-	sum := SumThroughRoutines(a, 100, 20)
+	sum := lib.SumThroughRoutines(a, 100, 20)
 	fmt.Println(sum.String())
 	if sum.String() != big.NewInt(100*100).String() {
 		t.Error("Expected 10000, got ", sum.String())
@@ -36,15 +38,15 @@ func BenchmarkRoutine(b *testing.B) {
 		a[i] = uint16(rand.Intn(65535))
 	}
 	b.Run("routines25", func(b *testing.B) {
-		SumThroughRoutines(a, N2, 25)
+		lib.SumThroughRoutines(a, N2, 25)
 	})
 	b.Run("routines4", func(b *testing.B) {
-		SumThroughRoutines(a, N2, 4)
+		lib.SumThroughRoutines(a, N2, 4)
 	})
 	b.Run("routines3", func(b *testing.B) {
-		SumThroughRoutines(a, N2, 3)
+		lib.SumThroughRoutines(a, N2, 3)
 	})
 	b.Run("regular", func(b *testing.B) {
-		SumBig(a[:])
+		lib.SumBig(a[:])
 	})
 }
