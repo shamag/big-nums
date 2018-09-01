@@ -8,7 +8,7 @@ import (
 )
 
 func TestNull(t *testing.T) {
-	a := make([]int64, 10, 10)
+	a := make([]uint16, 10, 10)
 	sum := SumThroughRoutines(a, 10, 2)
 	if sum.String() != big.NewInt(0).String() {
 		t.Error("Expected 0, got ", sum)
@@ -16,7 +16,7 @@ func TestNull(t *testing.T) {
 }
 
 func Test100(t *testing.T) {
-	a := make([]int64, 100, 100)
+	a := make([]uint16, 100, 100)
 	for i := range a {
 		a[i] = 100
 	}
@@ -29,12 +29,11 @@ func Test100(t *testing.T) {
 
 var N2 int64 = 20000000
 
-var a = make([]int64, N2, N2)
+var a = make([]uint16, N2, N2)
 
 func BenchmarkRoutine(b *testing.B) {
 	for i := range a {
-		a[i] = rand.Int63()
-		a[i] = rand.Int63()
+		a[i] = uint16(rand.Intn(65535))
 	}
 	b.Run("routines25", func(b *testing.B) {
 		SumThroughRoutines(a, N2, 25)

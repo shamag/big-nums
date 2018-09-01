@@ -1,14 +1,9 @@
-package main
+package lib
 
 import (
-	"fmt"
 	"math"
 	"math/big"
-	"math/rand"
 )
-
-const N = 200000000000
-const routines = 30
 
 func SumBig(sl []uint16) big.Int {
 	var sum big.Int
@@ -51,16 +46,4 @@ func SumThroughRoutines(a []uint16, sliceLen int64, routines int) big.Int {
 		}
 	}
 	return sum
-}
-func main() {
-
-	a := make([]uint16, N, N)
-	for i := range a {
-		a[i] = uint16(rand.Intn(65535))
-	}
-	sum := SumThroughRoutines(a, N, routines)
-	fmt.Printf("%s\n", sum.String())
-
-	// sum2 := SumBig(a[:])
-	// fmt.Printf("%s\n", sum2.String())
 }
