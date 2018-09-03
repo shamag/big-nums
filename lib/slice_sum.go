@@ -1,5 +1,6 @@
 package lib
 
+// Суммирование элементов в слайсе
 import (
 	"math"
 	"math/big"

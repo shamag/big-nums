@@ -11,6 +11,8 @@ const routines = 30
 
 func main() {
 
+	// Расчет суммы элементов слайса
+
 	// a := make([]uint16, N, N)
 	// for i := range a {
 	// 	a[i] = uint16(rand.Intn(65535))
@@ -20,6 +22,8 @@ func main() {
 
 	// sum2 := SumBig(a[:])
 	// fmt.Printf("%s\n", sum2.String())
+
+	// Расчет суммы последовательных значений, поступающих в канал
 	ch := make(chan int64)
 	go func() {
 		for i := 0; i < N; i++ {

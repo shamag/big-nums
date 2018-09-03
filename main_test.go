@@ -86,7 +86,7 @@ func sumBig2(sl []int64) big.Int {
 }
 func TestChanRandom(t *testing.T) {
 	ch := make(chan int64)
-	var count int64 = 200
+	var count int64 = 2000000
 	a := make([]int64, count, count)
 	var i int64
 	for i = 0; i < count; i++ {
