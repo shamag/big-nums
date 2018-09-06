@@ -29,6 +29,7 @@ func main() {
 		for i := 0; i < N; i++ {
 			ch <- rand.Int63()
 		}
+		close(ch)
 	}()
 	sum := lib.SumChan(N, routines, ch)
 	fmt.Println("sum=", sum.String())

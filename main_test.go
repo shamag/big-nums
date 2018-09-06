@@ -57,6 +57,7 @@ func TestChanNull(t *testing.T) {
 		for i := 0; i < 100; i++ {
 			ch <- 0
 		}
+		close(ch)
 	}()
 	sum := lib.SumChan(100, 20, ch)
 	if sum.String() != big.NewInt(0).String() {
@@ -70,6 +71,7 @@ func TestChan100(t *testing.T) {
 		for i := 0; i < 100; i++ {
 			ch <- 100
 		}
+		close(ch)
 	}()
 	sum := lib.SumChan(100, 20, ch)
 	if sum.String() != big.NewInt(100*100).String() {
@@ -86,7 +88,7 @@ func sumBig2(sl []int64) big.Int {
 }
 func TestChanRandom(t *testing.T) {
 	ch := make(chan int64)
-	var count int64 = 2000000
+	var count int64 = 20000000
 	a := make([]int64, count, count)
 	var i int64
 	for i = 0; i < count; i++ {
@@ -97,6 +99,7 @@ func TestChanRandom(t *testing.T) {
 		for i = 0; i < count; i++ {
 			ch <- a[i]
 		}
+		close(ch)
 	}()
 	sum2 := sumBig2(a)
 	sum := lib.SumChan(count, 20, ch)
@@ -113,6 +116,7 @@ func BenchmarkChanRoutine(b *testing.B) {
 		for i = 0; i < count; i++ {
 			ch <- rand.Int63()
 		}
+		close(ch)
 	}()
 	lib.SumChan(count, 20, ch)
 }
