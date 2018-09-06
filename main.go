@@ -4,9 +4,11 @@ import (
 	lib "big-nums/lib"
 	"fmt"
 	"math/rand"
+
+	"gopkg.in/cheggaaa/pb.v1"
 )
 
-const N = 2000000000
+const N = 200000000000
 const routines = 30
 
 func main() {
@@ -26,7 +28,9 @@ func main() {
 	// Расчет суммы последовательных значений, поступающих в канал
 	ch := make(chan int64)
 	go func() {
+		bar := pb.StartNew(N)
 		for i := 0; i < N; i++ {
+			bar.Increment()
 			ch <- rand.Int63()
 		}
 		close(ch)
